@@ -1,0 +1,1186 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Application Portal | She Can Foundation</title>
+  <link rel="shortcut icon" type="image/png" href="{% static 'images/logo.png' %}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      /* Colors exactly matching success.html */
+      --brand-dark:      #0B192C; /* Navy Dark */
+      --brand-primary:   #1E3E62; /* Corporate Navy */
+      --brand-accent:    #E03E52; /* Professional Coral/Pink */
+      --brand-accent-lt: #FFF0F2; /* Soft Coral Tint */
+      
+      --white:           #FFFFFF;
+      --zinc-50:         #F8FAFC;
+      --zinc-100:        #F1F5F9;
+      --zinc-200:        #E2E8F0;
+      --zinc-300:        #CBD5E1;
+      --zinc-500:        #64748B;
+      --zinc-700:        #334155;
+      --zinc-900:        #0F172A;
+      
+      --success:         #10B981;
+      --success-lt:      #ECFDF5;
+      --danger:          #EF4444;
+      --danger-lt:       #FEF2F2;
+      
+      --border:          #E2E8F0;
+      --radius-sm:       6px;
+      --radius:          12px;
+      --radius-lg:       16px;
+      
+      --shadow-sm:       0 1px 3px rgba(11, 25, 44, 0.05);
+      --shadow:          0 10px 30px -10px rgba(11, 25, 44, 0.08), 0 1px 3px rgba(11, 25, 44, 0.02);
+      --shadow-lg:       0 20px 40px -15px rgba(11, 25, 44, 0.12);
+      
+      --transition:      all 0.25s ease;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--zinc-50);
+      min-height: 100vh;
+      color: var(--zinc-700);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    header {
+      height: 70px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      max-width: 900px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+    }
+
+    .brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--brand-accent);
+    }
+
+    .brand-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+
+    .brand-tagline {
+      font-size: 10.5px;
+      color: var(--zinc-500);
+      font-weight: 500;
+    }
+
+    .header-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--brand-accent);
+      background: var(--brand-accent-lt);
+      border: 1px solid rgba(224, 62, 82, 0.2);
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── PAGE MAIN ── */
+    .page-main {
+      flex: 1;
+      padding: 40px 1.5rem 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form-container {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .form-intro {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-intro h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--brand-dark);
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .form-intro p {
+      font-size: 14.5px;
+      color: var(--zinc-500);
+    }
+
+    .form-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .tracker-bar {
+      padding: 1.75rem 2rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--white);
+    }
+
+    .tracker-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+    }
+
+    .tracker-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brand-primary);
+    }
+
+    .step-badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--zinc-500);
+      background: var(--zinc-100);
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+
+    .step-badge span {
+      color: var(--brand-accent);
+    }
+
+    /* Dots & connector lines */
+    .progress-track {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: relative;
+    }
+
+    .progress-step-item {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+
+    .progress-step-item:last-child {
+      flex: 0;
+    }
+
+    .step-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--zinc-200);
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--zinc-500);
+      flex-shrink: 0;
+      transition: var(--transition);
+      z-index: 5;
+    }
+
+    .progress-step-item.active .step-dot {
+      border-color: var(--brand-accent);
+      background: var(--white);
+      color: var(--brand-accent);
+      box-shadow: 0 0 0 4px rgba(224, 62, 82, 0.15);
+    }
+
+    .progress-step-item.done .step-dot {
+      border-color: var(--success);
+      background: var(--success);
+      color: var(--white);
+    }
+
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--zinc-200);
+      transition: var(--transition);
+      margin: 0 -1px;
+    }
+
+    .progress-step-item.done .step-line {
+      background: var(--success);
+    }
+
+    .tracker-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    .tracker-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--zinc-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .tracker-labels .active { color: var(--brand-accent); }
+    .tracker-labels .done { color: var(--success); }
+
+    .card-body {
+      padding: 2.25rem 2.5rem; /* Single card-body padding config */
+    }
+
+    .step-panel {
+      display: none;
+      animation: panelFadeIn 0.25s ease both;
+    }
+
+    .step-panel.active {
+      display: block;
+    }
+
+    @keyframes panelFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--zinc-500);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--zinc-100);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-grid.single {
+      grid-template-columns: 1fr;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      position: relative;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--zinc-700);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      height: 40px;
+      padding: 0 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14.5px;
+      color: var(--zinc-900);
+      background: var(--white);
+      outline: none;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .form-group select {
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      padding-right: 32px;
+    }
+
+    .select-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .select-container::after {
+      content: '';
+      position: absolute;
+      right: 12px;
+      width: 0; height: 0;
+      border-left: 4.5px solid transparent;
+      border-right: 4.5px solid transparent;
+      border-top: 5px solid var(--zinc-500);
+      pointer-events: none;
+    }
+
+    .form-group textarea {
+      height: 110px;
+      padding: 10px 12px;
+      resize: none;
+      line-height: 1.5;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--brand-accent);
+      box-shadow: 0 0 0 3px rgba(224, 62, 82, 0.08);
+    }
+
+    .form-group.error input,
+    .form-group.error select,
+    .form-group.error textarea {
+      border-color: var(--danger);
+      background-color: var(--danger-lt);
+    }
+
+    .form-group.valid input,
+    .form-group.valid select,
+    .form-group.valid textarea {
+      border-color: var(--success);
+    }
+
+    .form-hint {
+      font-size: 11px;
+      color: var(--danger);
+      display: none;
+      margin-top: 1px;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+    }
+
+    .form-group.error .form-hint {
+      display: flex;
+    }
+
+    .option-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 3px;
+    }
+
+    .pill-opt {
+      position: relative;
+    }
+
+    .pill-opt input[type="radio"],
+    .pill-opt input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0; width: 0;
+    }
+
+    .pill-opt label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 34px;
+      padding: 0 14px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--white);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--zinc-700);
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pill-opt label:hover {
+      border-color: var(--brand-accent);
+      color: var(--brand-accent);
+      background: var(--brand-accent-lt);
+    }
+
+    .pill-opt input:checked + label {
+      border-color: var(--brand-accent);
+      background: var(--brand-accent-lt);
+      color: var(--brand-accent);
+      font-weight: 700;
+      box-shadow: 0 3px 8px rgba(224, 62, 82, 0.08);
+    }
+
+    .consent-block {
+      background: var(--zinc-50);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-top: 1.25rem;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .consent-block input[type="checkbox"] {
+      width: 16px; height: 16px;
+      margin-top: 2px;
+      accent-color: var(--brand-accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .consent-block label {
+      font-size: 12.5px;
+      color: var(--zinc-700);
+      line-height: 1.5;
+      cursor: pointer;
+    }
+
+    .summary-card {
+      background: var(--brand-accent-lt);
+      border: 1.5px solid rgba(224, 62, 82, 0.15);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-bottom: 1.5rem;
+      display: none;
+      animation: panelFadeIn 0.3s ease;
+    }
+
+    .summary-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--brand-accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .summary-details {
+      font-size: 13px;
+      color: var(--brand-dark);
+      line-height: 1.6;
+    }
+
+    .form-group-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--zinc-500);
+    }
+
+    .char-count {
+      margin-left: auto;
+      font-weight: 600;
+    }
+
+    .portal-footer {
+      padding: 1.25rem 2.5rem 1.5rem;
+      background: var(--zinc-100);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-back {
+      height: 42px;
+      padding: 0 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--zinc-700);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-back:hover {
+      border-color: var(--zinc-500);
+      color: var(--zinc-900);
+      background: var(--zinc-50);
+    }
+
+    .btn-next {
+      flex: 1;
+      height: 42px;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--brand-primary);
+      color: var(--white);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(30, 62, 98, 0.15);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-next:hover {
+      background: var(--brand-dark);
+      box-shadow: 0 6px 14px rgba(11, 25, 44, 0.2);
+    }
+
+    .btn-submit {
+      flex: 1;
+      height: 42px;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--brand-accent);
+      color: var(--white);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(224, 62, 82, 0.15);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-submit:hover {
+      background: #BE2D3E;
+      box-shadow: 0 6px 14px rgba(224, 62, 82, 0.25);
+    }
+    footer {
+      background: var(--brand-dark);
+      color: var(--zinc-300);
+      padding: 30px 1.5rem;
+      border-top: 3px solid var(--brand-accent);
+      text-align: center;
+    }
+
+    .footer-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-brand-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .footer-brand-tagline {
+      font-size: 11px;
+      color: var(--zinc-500);
+    }
+
+    .footer-copyright {
+      font-size: 12px;
+      color: var(--zinc-500);
+      margin-top: 6px;
+    }
+
+    @media (max-width: 580px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .card-body {
+        padding: 1.5rem 1rem;
+      }
+      .tracker-bar {
+        padding: 1.25rem 1.25rem 1rem;
+      }
+      .portal-footer {
+        padding: 1rem 1.25rem;
+      }
+      .tracker-label {
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-container">
+      <a class="brand-logo-wrap" href="/">
+        <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=296,fit=crop,q=95/Aq2NJ23MzBH2rx2j/she-YlenJon1O7ieeEoa.jpg"
+             alt="She Can Foundation Logo" class="brand-logo" />
+        <div class="brand-details">
+          <span class="brand-name">She Can Foundation</span>
+          <span class="brand-tagline">Empowering Women in Tech</span>
+        </div>
+      </a>
+      <span class="header-badge">Intake 2026</span>
+    </div>
+  </header>
+
+  <main class="page-main">
+    <div class="form-container">
+      
+      <div class="form-intro">
+        <h1>Application Form</h1>
+        <p>Fill in your credentials to apply for our specialized technical tracks</p>
+        <p style="margin-top: 10px; font-size: 13.5px; color: var(--zinc-500);">
+          Already have an account? 
+          <a href="/login/" style="color: var(--brand-accent); font-weight: 700; text-decoration: none;">Log In</a> 
+          or 
+          <a href="/register/" style="color: var(--brand-accent); font-weight: 700; text-decoration: none;">Sign Up</a> to track your application.
+        </p>
+      </div>
+
+      <div class="form-card">
+        
+        <div class="tracker-bar">
+          <div class="tracker-top">
+            <span class="tracker-title">Scholarship Registration</span>
+            <div class="step-badge">Step <span id="step-label">1</span> of 4</div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <div class="progress-track">
+              <div class="progress-step-item active" id="psw-1">
+                <div class="step-dot" id="pd-1">1</div>
+                <div class="step-line" id="pl-1"></div>
+              </div>
+              <div class="progress-step-item" id="psw-2">
+                <div class="step-dot" id="pd-2">2</div>
+                <div class="step-line" id="pl-2"></div>
+              </div>
+              <div class="progress-step-item" id="psw-3">
+                <div class="step-dot" id="pd-3">3</div>
+                <div class="step-line" id="pl-3"></div>
+              </div>
+              <div class="progress-step-item" id="psw-4">
+                <div class="step-dot" id="pd-4">4</div>
+              </div>
+            </div>
+            <div class="tracker-labels">
+              <span class="tracker-label active" id="lbl-1">Personal</span>
+              <span class="tracker-label" id="lbl-2">Location</span>
+              <span class="tracker-label" id="lbl-3">Interests</span>
+              <span class="tracker-label" id="lbl-4">Message</span>
+            </div>
+          </div>
+        </div>
+
+        <form method="POST" id="main-form" enctype="multipart/form-data">
+          {% csrf_token %}
+
+          <div class="card-body">
+            
+            <div class="step-panel active" id="step-1">
+              <div class="section-label">
+                <i data-lucide="user" style="width:13px; height:13px; color:var(--brand-accent);"></i>
+                <span>Personal Credentials</span>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group" id="f-username">
+                  <label for="username">Full Name</label>
+                  <input type="text" name="username" id="username" placeholder="Enter your full name" required />
+                  <span class="form-hint"><i data-lucide="alert-circle" style="width:12px; height:12px;"></i> Full name is required.</span>
+                </div>
+                <div class="form-group" id="f-useremail">
+                  <label for="useremail">Email Address</label>
+                  <input type="email" name="useremail" id="useremail" placeholder="name@example.com" required />
+                  <span class="form-hint"><i data-lucide="alert-circle" style="width:12px; height:12px;"></i> Enter a valid email format.</span>
+                </div>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group" id="f-userphone">
+                  <label for="userphone">Phone Number</label>
+                  <input type="tel" name="userphone" id="userphone" placeholder="10-digit mobile number" required />
+                  <span class="form-hint"><i data-lucide="alert-circle" style="width:12px; height:12px;"></i> Enter a valid 10-digit number.</span>
+                </div>
+                <div class="form-group" id="f-userdob">
+                  <label for="userdob">Date of Birth</label>
+                  <input type="date" name="userdob" id="userdob" required />
+                  <span class="form-hint"><i data-lucide="alert-circle" style="width:12px; height:12px;"></i> Date of birth is required.</span>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top: 4px;">
+                <label>Gender</label>
+                <div class="option-pills">
+                  <div class="pill-opt">
+                    <input type="radio" name="usergender" id="g-f" value="F" required />
+                    <label for="g-f">Female</label>
+                  </div>
+                  <div class="pill-opt">
+                    <input type="radio" name="usergender" id="g-m" value="M" />
+                    <label for="g-m">Male</label>
+                  </div>
+                  <div class="pill-opt">
+                    <input type="radio" name="usergender" id="g-o" value="O" />
+                    <label for="g-o">Other</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-panel" id="step-2">
+              <div class="section-label">
+                <i data-lucide="map-pin" style="width:13px; height:13px; color:var(--brand-accent);"></i>
+                <span>Location Profile</span>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-group" id="f-usercity">
+                  <label for="usercity">City</label>
+                  <input type="text" name="usercity" id="usercity" placeholder="Residential city" required />
+                  <span class="form-hint"><i data-lucide="alert-circle" style="width:12px; height:12px;"></i> Please enter your city name.</span>
+                </div>
+                <div class="form-group">
+                  <label for="userpincode">PIN Code <span style="color:var(--zinc-500); font-weight:400;">(optional)</span></label>
+                  <input type="text" name="userpincode" id="userpincode" placeholder="6-digit PIN code" maxlength="6" />
+                </div>
+              </div>
+
+              <div class="form-grid single">
+                <div class="form-group" id="f-userstate">
+                  <label for="userstate">State / Union Territory</label>
+                  <div class="select-container">
+                    <select name="userstate" id="userstate" required>
+                      <option value="" disabled selected>Choose state</option>
+                      <option>Andhra Pradesh</option><option>Arunachal Pradesh</option>
+                      <option>Assam</option><option>Bihar</option><option>Chhattisgarh</option>
+                      <option>Goa</option><option>Gujarat</option><option>Haryana</option>
+                      <option>Himachal Pradesh</option><option>Jharkhand</option>
+                      <option>Karnataka</option><option>Kerala</option>
+                      <option>Madhya Pradesh</option><option>Maharashtra</option>
+                      <option>Manipur</option><option>Meghalaya</option>
+                      <option>Mizoram</option><option>Nagaland</option>
+                      <option>Odisha</option><option>Punjab</option>
+                      <option>Rajasthan</option><option>Sikkim</option>
+                      <option>Tamil Nadu</option><option>Telangana</option>
+                      <option>Tripura</option><option>Uttar Pradesh</option>
+                      <option>Uttarakhand</option><option>West Bengal</option>
+                      <option>Andaman and Nicobar Islands</option>
+                      <option>Chandigarh</option>
+                      <option>Dadra and Nagar Haveli and Daman and Diu</option>
+                      <option>Delhi</option><option>Jammu and Kashmir</option>
+                      <option>Ladakh</option><option>Lakshadweep</option>
+                      <option>Puducherry</option>
+                    </select>
+                  </div>
+                  <span class="form-hint"><i data-lucide="alert-circle" style="width:12px; height:12px;"></i> Please select state.</span>
+                </div>
+              </div>
+
+              <div class="form-grid single" style="margin-bottom:0;">
+                <div class="form-group">
+                  <label for="heardvia">How did you hear about us? <span style="color:var(--zinc-500); font-weight:400;">(optional)</span></label>
+                  <div class="select-container">
+                    <select name="heardvia" id="heardvia">
+                      <option value="" disabled selected>Select channel</option>
+                      <option>Social Media</option><option>Friend or Family</option>
+                      <option>School / College</option><option>NGO / Community</option>
+                      <option>News / Articles</option><option>Other</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-panel" id="step-3">
+              <div class="section-label">
+                <i data-lucide="compass" style="width:13px; height:13px; color:var(--brand-accent);"></i>
+                <span>Interests &amp; Availability</span>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label style="margin-bottom: 1px;">Areas of Interest <span style="color:var(--zinc-500); font-weight:400;">(Select all that apply)</span>
+                </label>
+                <div class="option-pills">
+                  <div class="pill-opt">
+                    <input type="checkbox" name="interest" id="i-coding" value="Coding & Development" />
+                    <label for="i-coding">Coding &amp; Dev</label>
+                  </div>
+                  <div class="pill-opt">
+                    <input type="checkbox" name="interest" id="i-design" value="UI/UX Design" />
+                    <label for="i-design">UI/UX Design</label>
+                  </div>
+                  <div class="pill-opt">
+                    <input type="checkbox" name="interest" id="i-data" value="Data Science" />
+                    <label for="i-data">Data Science &amp; AI</label>
+                  </div>
+                  <div class="pill-opt">
+                    <input type="checkbox" name="interest" id="i-cyber" value="Cybersecurity" />
+                    <label for="i-cyber">Cybersecurity</label>
+                  </div>
+                  <div class="pill-opt">
+                    <input type="checkbox" name="interest" id="i-biz" value="Digital Business" />
+                    <label for="i-biz">Digital Business</label>
+                  </div>
+                  <div class="pill-opt">
+                    <input type="checkbox" name="interest" id="i-leadership" value="Leadership" />
+                    <label for="i-leadership">Leadership</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 1.25rem;">
+                <label style="margin-bottom: 1px;">Experience Level</label>
+                <div class="option-pills">
+                  <div class="pill-opt">
+                    <input type="radio" name="experience" id="ex-b" value="Beginner" checked />
+                    <label for="ex-b">Beginner</label>
+                  </div>
+                  <div class="pill-opt">
+                    <input type="radio" name="experience" id="ex-i" value="Intermediate" />
+                    <label for="ex-i">Intermediate</label>
+                  </div>
+                  <div class="pill-opt">
+                    <input type="radio" name="experience" id="ex-a" value="Advanced" />
+                    <label for="ex-a">Advanced</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label style="margin-bottom: 1px;">Weekly Availability</label>
+                <div class="option-pills">
+                  <div class="pill-opt">
+                    <input type="radio" name="availability" id="av-wd" value="Weekdays" checked />
+                    <label for="av-wd">Weekdays</label>
+                  </div>
+                  <div class="pill-opt">
+                    <input type="radio" name="availability" id="av-we" value="Weekends" />
+                    <label for="av-we">Weekends</label>
+                  </div>
+                  <div class="pill-opt">
+                    <input type="radio" name="availability" id="av-both" value="Both" />
+                    <label for="av-both">Flexible (Both)</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-top: 1.25rem;">
+                <label for="user_resume">Upload Resume / CV <span style="color:var(--zinc-500); font-weight:400;">(optional, PDF only)</span></label>
+                <input type="file" name="user_resume" id="user_resume" accept=".pdf" style="padding-top:7px; height:auto; min-height:40px;" />
+              </div>
+            </div>
+
+            <div class="step-panel" id="step-4">
+              <div class="section-label">
+                <i data-lucide="scroll" style="width:13px; height:13px; color:var(--brand-accent);"></i>
+                <span>Review &amp; Motivation Letter</span>
+              </div>
+
+              <!-- Summary Card Preview -->
+              <div class="summary-card" id="summary-box">
+                <div class="summary-title">
+                  <i data-lucide="check-circle" style="width:12px; height:12px;"></i>
+                  <span>Profile Summary</span>
+                </div>
+                <div class="summary-details" id="summary-text"></div>
+              </div>
+
+              <div class="form-group" id="f-usermessage">
+                <label for="usermessage">Motivation / Message</label>
+                <textarea name="usermessage" id="usermessage" placeholder="Tell us why you wish to apply, what you hope to achieve, and how She Can Foundation can support your technology aspirations..." required maxlength="500"></textarea>
+                
+                <div class="form-group-footer">
+                  <span class="form-hint" style="margin-top:0;"><i data-lucide="alert-circle" style="width:12px; height:12px;"></i> Write at least 20 characters.</span>
+                  <span class="char-count"><span id="char-ct">0</span> / 500</span>
+                </div>
+              </div>
+
+              <div class="consent-block">
+                <input type="checkbox" name="consent" id="consent" required />
+                <label for="consent">I consent to being contacted regarding registration updates and cohort announcements. My data will be kept securely and processed in alignment with foundation terms.</label>
+              </div>
+            </div>
+
+          </div>
+          <div class="portal-footer">
+            <button type="button" class="btn-back" id="btn-back" style="display:none;" onclick="prevStep()">
+              <i data-lucide="chevron-left" style="width:15px; height:15px;"></i>
+              Back
+            </button>
+            
+            <button type="button" class="btn-next" id="btn-next" onclick="nextStep()">
+              Continue
+              <i data-lucide="chevron-right" style="width:15px; height:15px;"></i>
+            </button>
+            
+            <button type="submit" class="btn-submit" id="btn-submit" style="display:none;">
+              Submit Application
+              <i data-lucide="send" style="width:14px; height:14px;"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <span class="footer-brand-text">She Can Foundation</span>
+      <span class="footer-brand-tagline">Empowering Women Through Technology Education</span>
+      <span class="footer-copyright">&copy; 2026 She Can Foundation. All rights reserved. &nbsp;·&nbsp; Registered NGO.</span>
+    </div>
+  </footer>
+
+  <script>
+
+    lucide.createIcons();
+
+    let current = 1;
+    const TOTAL = 4;
+
+    function updateUI() {
+      // Step numbers update
+      document.getElementById('step-label').textContent = current;
+      
+      document.getElementById('btn-back').style.display   = current > 1 ? 'flex' : 'none';
+      document.getElementById('btn-next').style.display   = current < TOTAL ? 'flex' : 'none';
+      document.getElementById('btn-submit').style.display = current === TOTAL ? 'flex' : 'none';
+
+      for (let i = 1; i <= TOTAL; i++) {
+        const pd  = document.getElementById('pd-' + i);
+        const psw = document.getElementById('psw-' + i);
+        const lbl = document.getElementById('lbl-' + i);
+        
+        pd.classList.remove('active', 'done');
+        psw.classList.remove('active', 'done');
+        if (lbl) lbl.classList.remove('active', 'done');
+        
+        if (i < current) {
+          pd.classList.add('done');
+          pd.innerHTML = '✓';
+          psw.classList.add('done');
+          if (lbl) lbl.classList.add('done');
+        } 
+        else if (i === current) {
+          pd.classList.add('active');
+          pd.textContent = i;
+          psw.classList.add('active');
+          if (lbl) lbl.classList.add('active');
+        } 
+        else {
+          pd.textContent = i;
+        }
+      }
+      
+      for (let i = 1; i < TOTAL; i++) {
+        const pl = document.getElementById('pl-' + i);
+        if (pl) {
+          pl.classList.toggle('done', i < current);
+        }
+      }
+
+      document.querySelectorAll('.step-panel').forEach(panel => panel.classList.remove('active'));
+      const activePanel = document.getElementById('step-' + current);
+      if (activePanel) {
+        activePanel.classList.add('active');
+      }
+    }
+
+    function validate(step) {
+      let ok = true;
+      
+      const check = (id, validateFn) => {
+        const fieldEl = document.getElementById(id);
+        const wrapper = document.getElementById('f-' + id);
+        if (!fieldEl || !wrapper) return true;
+        
+        const valid = validateFn(fieldEl.value);
+        wrapper.classList.toggle('error', !valid);
+        wrapper.classList.toggle('valid', valid);
+        
+        if (!valid) {
+          ok = false;
+        }
+        return valid;
+      };
+
+      if (step === 1) {
+        check('username',  v => v.trim().length >= 2);
+        check('useremail', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+        check('userphone', v => /^[6-9]\d{9}$/.test(v.replace(/\D/g, '')));
+        check('userdob',   v => v.length > 0);
+        
+        const genderChosen = document.querySelector('input[name="usergender"]:checked');
+        if (!genderChosen) {
+          ok = false;
+          alert("Please select your gender.");
+        }
+      }
+      
+      if (step === 2) {
+        check('usercity',  v => v.trim().length >= 2);
+        check('userstate', v => v.length > 0);
+      }
+      
+      if (step === 4) {
+        check('usermessage', v => v.trim().length >= 20);
+      }
+      
+      return ok;
+    }
+
+    function nextStep() {
+      if (!validate(current)) return;
+      if (current < TOTAL) {
+        current++;
+        updateUI();
+      }
+      if (current === TOTAL) {
+        buildSummary();
+      }
+    }
+
+    function prevStep() {
+      if (current > 1) {
+        current--;
+        updateUI();
+      }
+    }
+
+    function buildSummary() {
+      const name = document.getElementById('username').value;
+      const email = document.getElementById('useremail').value;
+      const phone = document.getElementById('userphone').value;
+      const city = document.getElementById('usercity').value;
+      const state = document.getElementById('userstate').value;
+      
+      const genderEl = document.querySelector('input[name="usergender"]:checked');
+      const genderMap = { 'F': 'Female', 'M': 'Male', 'O': 'Other' };
+      const genderText = genderEl ? (genderMap[genderEl.value] || 'Other') : 'Unspecified';
+
+      const interests = [...document.querySelectorAll('input[name="interest"]:checked')].map(c => c.value);
+      const experienceEl = document.querySelector('input[name="experience"]:checked');
+      const experienceVal = experienceEl ? experienceEl.value : 'Beginner';
+
+      const summaryBox = document.getElementById('summary-box');
+      const summaryText = document.getElementById('summary-text');
+      
+      if (name) {
+        summaryBox.style.display = 'block';
+        summaryText.innerHTML = `
+          <strong>Full Name:</strong> ${name} <br>
+          <strong>Contact details:</strong> ${email} &nbsp;·&nbsp; +91 ${phone} <br>
+          <strong>Gender &amp; Location:</strong> ${genderText} &nbsp;·&nbsp; ${city}, ${state} <br>
+          <strong>Technical Level:</strong> ${experienceVal} <br>
+          <strong>Interests:</strong> ${interests.length ? interests.join(', ') : 'None selected'}
+        `;
+      }
+    }
+
+    document.getElementById('usermessage').addEventListener('input', function() {
+      const len = this.value.length;
+      const counterEl = document.getElementById('char-ct');
+      counterEl.textContent = len;
+      counterEl.style.color = len > 450 ? 'var(--danger)' : 'var(--zinc-500)';
+    });
+
+    document.getElementById('userphone').addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').slice(0, 10);
+    });
+
+    document.getElementById('userpincode').addEventListener('input', function() {
+      this.value = this.value.replace(/\D/g, '').slice(0, 6);
+    });
+
+    document.querySelectorAll('input, select, textarea').forEach(input => {
+      input.addEventListener('input', () => {
+        const wrapper = document.getElementById('f-' + input.id);
+        if (wrapper) wrapper.classList.remove('error');
+      });
+      input.addEventListener('change', () => {
+        const wrapper = document.getElementById('f-' + input.id);
+        if (wrapper) wrapper.classList.remove('error');
+      });
+    });
+
+    document.getElementById('main-form').addEventListener('submit', function(e) {
+      if (!validate(4)) {
+        e.preventDefault();
+        return;
+      }
+      const consent = document.getElementById('consent');
+      if (!consent.checked) {
+        consent.style.outline = '2px solid var(--danger)';
+        e.preventDefault();
+        return;
+      }
+    });
+  </script>
+</body>
+</html>

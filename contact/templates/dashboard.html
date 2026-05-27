@@ -1,0 +1,1333 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Admin Dashboard | She Can Foundation</title>
+  <link rel="shortcut icon" type="image/png" href="{% static 'images/logo.png' %}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Lucide Icons & Chart.js CDNs -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    :root {
+      /* Palette matching success.html and home.html */
+      --brand-dark:      #0B192C;
+      --brand-primary:   #1E3E62;
+      --brand-accent:    #E03E52;
+      --brand-accent-lt: #FFF0F2;
+      
+      --white:           #FFFFFF;
+      --zinc-50:         #F8FAFC;
+      --zinc-100:        #F1F5F9;
+      --zinc-200:        #E2E8F0;
+      --zinc-300:        #CBD5E1;
+      --zinc-500:        #64748B;
+      --zinc-700:        #334155;
+      --zinc-900:        #0F172A;
+      
+      --success:         #10B981;
+      --success-lt:      #ECFDF5;
+      --warning:         #F59E0B;
+      --warning-lt:      #FFFBEB;
+      --danger:          #EF4444;
+      --danger-lt:       #FEF2F2;
+      
+      --border:          #E2E8F0;
+      --radius-sm:       6px;
+      --radius:          12px;
+      --radius-lg:       16px;
+      
+      --shadow-sm:       0 1px 3px rgba(11, 25, 44, 0.05);
+      --shadow:          0 10px 30px -10px rgba(11, 25, 44, 0.08), 0 1px 3px rgba(11, 25, 44, 0.02);
+      --shadow-lg:       0 20px 40px -15px rgba(11, 25, 44, 0.12);
+      
+      --transition:      all 0.25s ease;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--zinc-50);
+      min-height: 100vh;
+      color: var(--zinc-700);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    header {
+      height: 70px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+    }
+
+    .brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--brand-accent);
+    }
+
+    .brand-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      letter-spacing: -0.3px;
+      line-height: 1.2;
+    }
+
+    .brand-tagline {
+      font-size: 10.5px;
+      color: var(--zinc-500);
+      font-weight: 500;
+    }
+
+    .header-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--white);
+      background: var(--brand-primary);
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ── PAGE MAIN ── */
+    .page-main {
+      flex: 1;
+      padding: 40px 1.5rem 60px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Dashboard Intro */
+    .dashboard-intro {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .dashboard-intro h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--brand-dark);
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+
+    .dashboard-intro p {
+      font-size: 14.5px;
+      color: var(--zinc-500);
+    }
+
+    /* ── CHARTS PANEL ── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      height: 320px;
+    }
+
+    .chart-card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--brand-primary);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chart-card h3 i {
+      color: var(--brand-accent);
+    }
+
+    .chart-wrapper {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      height: calc(100% - 30px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ── STATISTICS CARDS ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .stats-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .stats-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .stats-icon-wrap {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .stats-card.total-users .stats-icon-wrap {
+      background: rgba(30, 62, 98, 0.08);
+      color: var(--brand-primary);
+    }
+
+    .stats-card.verified-users .stats-icon-wrap {
+      background: var(--success-lt);
+      color: var(--success);
+    }
+
+    .stats-card.pending-users .stats-icon-wrap {
+      background: var(--warning-lt);
+      color: var(--warning);
+    }
+
+    .stats-card.approved-users .stats-icon-wrap {
+      background: var(--brand-accent-lt);
+      color: var(--brand-accent);
+    }
+
+    .stats-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stats-number {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--brand-dark);
+      line-height: 1.2;
+    }
+
+    .stats-label {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--zinc-500);
+    }
+
+    /* ── TABLE CONTROLS ── */
+    .table-controls-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .search-filter-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .search-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      max-width: 320px;
+    }
+
+    .search-input-wrap i {
+      position: absolute;
+      left: 12px;
+      color: var(--zinc-500);
+    }
+
+    .search-input-wrap input {
+      width: 100%;
+      height: 38px;
+      padding: 0 12px 0 36px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13.5px;
+      background: var(--white);
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input-wrap input:focus {
+      border-color: var(--brand-accent);
+      box-shadow: 0 0 0 3px rgba(224, 62, 82, 0.08);
+    }
+
+    .filter-select {
+      height: 38px;
+      padding: 0 28px 0 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13px;
+      color: var(--zinc-700);
+      background: var(--white);
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 14px;
+    }
+
+    .filter-select:focus {
+      border-color: var(--brand-accent);
+    }
+
+    .btn-export-csv {
+      height: 38px;
+      padding: 0 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--zinc-700);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-export-csv:hover {
+      background: var(--brand-accent-lt);
+      border-color: var(--brand-accent);
+      color: var(--brand-accent);
+    }
+
+    .btn-logout {
+      height: 38px;
+      padding: 0 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--zinc-700);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+      text-decoration: none;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .btn-logout:hover {
+      background: var(--danger-lt);
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .btn-save-row {
+      height: 30px;
+      padding: 0 12px;
+      border-radius: var(--radius-sm);
+      border: 1.5px solid var(--success);
+      background: var(--success-lt);
+      color: var(--success);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+      outline: none;
+      animation: pulse-green 1.5s infinite ease-in-out;
+    }
+
+    @keyframes pulse-green {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .btn-save-row:hover {
+      background: var(--success);
+      color: var(--white);
+    }
+
+    .saved-badge-text {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* ── TABLE CONTAINER ── */
+    .table-container {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .table-header-strip {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--white);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--brand-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .table-title i {
+      color: var(--brand-accent);
+    }
+
+    .table-count-badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--zinc-500);
+      background: var(--zinc-100);
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+
+    /* Responsive Table Styles */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13.5px;
+    }
+
+    table thead th {
+      background: var(--zinc-100);
+      color: var(--zinc-700);
+      font-weight: 700;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    table tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    table tbody tr:hover {
+      background: var(--zinc-50);
+    }
+
+    table tbody tr.row-hidden {
+      display: none;
+    }
+
+    table tbody td {
+      padding: 12px 16px;
+      vertical-align: middle;
+      color: var(--zinc-700);
+      white-space: nowrap;
+    }
+
+    /* Table interactive components */
+    .td-id {
+      font-weight: 700;
+      color: var(--brand-primary);
+    }
+
+    .td-name {
+      font-weight: 700;
+      color: var(--brand-dark);
+    }
+
+    /* Interactive AJAX verify checkbox */
+    .verify-toggle-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .verify-toggle-btn {
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      border: 1.5px solid var(--zinc-300);
+      background: var(--white);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      color: transparent;
+    }
+
+    .verify-toggle-btn.verified {
+      border-color: var(--success);
+      background: var(--success);
+      color: var(--white);
+    }
+
+    .verify-toggle-btn:hover {
+      border-color: var(--brand-accent);
+    }
+
+    /* Select styles in cells */
+    .cell-select {
+      height: 30px;
+      padding: 0 20px 0 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--white);
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 6px center;
+      background-size: 10px;
+    }
+
+    .cell-select.select-pending {
+      color: var(--warning);
+      border-color: rgba(245, 158, 11, 0.3);
+      background-color: var(--warning-lt);
+    }
+
+    .cell-select.select-approved {
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.3);
+      background-color: var(--success-lt);
+    }
+
+    .cell-select.select-rejected {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.3);
+      background-color: var(--danger-lt);
+    }
+
+    .cell-select.cohort-select {
+      color: var(--brand-primary);
+      border-color: var(--border);
+      max-width: 140px;
+    }
+
+    .badge-gender {
+      background: var(--zinc-100);
+      color: var(--zinc-700);
+      border: 1px solid var(--border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Resume link styling */
+    .resume-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--brand-accent);
+      text-decoration: none;
+      font-weight: 700;
+      transition: var(--transition);
+    }
+
+    .resume-link:hover {
+      color: var(--brand-primary);
+      text-decoration: underline;
+    }
+
+    .td-date {
+      font-weight: 500;
+    }
+
+    .td-time {
+      color: var(--zinc-500);
+      font-size: 12px;
+    }
+
+    /* Empty state */
+    .empty-state {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .empty-icon-wrap {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--zinc-100);
+      color: var(--zinc-500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+    }
+
+    .empty-state h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      margin-bottom: 4px;
+    }
+
+    .empty-state p {
+      font-size: 13.5px;
+      color: var(--zinc-500);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--brand-dark);
+      color: var(--zinc-300);
+      padding: 30px 1.5rem;
+      border-top: 3px solid var(--brand-accent);
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-brand-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .footer-brand-tagline {
+      font-size: 11px;
+      color: var(--zinc-500);
+    }
+
+    .footer-copyright {
+      font-size: 12px;
+      color: var(--zinc-500);
+      margin-top: 6px;
+    }
+
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+      .chart-card {
+        height: 280px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .table-controls-strip {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .search-filter-box {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+      .search-input-wrap {
+        max-width: none;
+      }
+      .btn-export-csv {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      .page-main {
+        padding: 30px 1rem;
+      }
+      .table-header-strip {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <a class="brand-logo-wrap" href="/">
+        <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=296,fit=crop,q=95/Aq2NJ23MzBH2rx2j/she-YlenJon1O7ieeEoa.jpg"
+             alt="She Can Foundation Logo" class="brand-logo" />
+        <div class="brand-details">
+          <span class="brand-name">She Can Foundation</span>
+          <span class="brand-tagline">Empowering Women in Tech</span>
+        </div>
+      </a>
+      <div class="header-actions" style="display: flex; align-items: center; gap: 12px;">
+        <span class="header-badge">
+          <i data-lucide="shield" style="width:13px; height:13px;"></i>
+          <span>Admin Console</span>
+        </span>
+        <a href="{% url 'student_logout' %}" class="btn-logout" style="height: 32px; padding: 0 12px; font-size: 12px; display: inline-flex; align-items: center;">
+          <i data-lucide="log-out" style="width: 13px; height: 13px;"></i>
+          <span>Log Out</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="page-main">
+    
+    <!-- Dashboard Intro -->
+    <div class="dashboard-intro">
+      <h1>Admissions Administration</h1>
+      <p>Log verified applicants, review motivational statements, and assign cohort tracks live</p>
+    </div>
+
+    <!-- STATISTICS CARDS -->
+    <div class="stats-grid">
+      <!-- Total Users -->
+      <div class="stats-card total-users">
+        <div class="stats-icon-wrap">
+          <i data-lucide="users" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div class="stats-info">
+          <span class="stats-number" id="stats-total">{{ data|length }}</span>
+          <span class="stats-label">Total Applicants</span>
+        </div>
+      </div>
+
+      <!-- Verified Users -->
+      <div class="stats-card verified-users">
+        <div class="stats-icon-wrap">
+          <i data-lucide="user-check" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div class="stats-info">
+          <span class="stats-number" id="stats-verified">{{ verified_users }}</span>
+          <span class="stats-label">Verified Cohorts</span>
+        </div>
+      </div>
+
+      <!-- Pending Reviews -->
+      <div class="stats-card pending-users">
+        <div class="stats-icon-wrap">
+          <i data-lucide="clock" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div class="stats-info">
+          <span class="stats-number" id="stats-pending">{{ stats.pending }}</span>
+          <span class="stats-label">Pending Reviews</span>
+        </div>
+      </div>
+
+      <!-- Approved Users -->
+      <div class="stats-card approved-users">
+        <div class="stats-icon-wrap">
+          <i data-lucide="award" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div class="stats-info">
+          <span class="stats-number" id="stats-approved">{{ stats.approved }}</span>
+          <span class="stats-label">Approved Students</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHARTS TELEMETRY GRID -->
+    <div class="charts-grid">
+      <!-- Cohort Interest Chart -->
+      <div class="chart-card">
+        <h3>
+          <i data-lucide="pie-chart" style="width:16px; height:16px;"></i>
+          <span>Track Preferences</span>
+        </h3>
+        <div class="chart-wrapper">
+          <canvas id="cohortChart"></canvas>
+        </div>
+      </div>
+
+      <!-- State Demographics Chart -->
+      <div class="chart-card">
+        <h3>
+          <i data-lucide="bar-chart-3" style="width:16px; height:16px;"></i>
+          <span>Top Candidate Locations</span>
+        </h3>
+        <div class="chart-wrapper">
+          <canvas id="stateChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE CONTROLS BAR -->
+    <div class="table-controls-strip">
+      <div class="search-filter-box">
+        <div class="search-input-wrap">
+          <i data-lucide="search" style="width:15px; height:15px;"></i>
+          <input type="text" id="search-bar" placeholder="Search by Name or City..." onkeyup="filterTable()" />
+        </div>
+        
+        <!-- Status Filter -->
+        <select id="status-filter" class="filter-select" onchange="filterTable()">
+          <option value="">All Statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+
+        <!-- Cohort Filter -->
+        <select id="cohort-filter" class="filter-select" onchange="filterTable()">
+          <option value="">All Cohorts</option>
+          <option value="None">Unassigned</option>
+          <option value="Coding & Development">Coding &amp; Dev</option>
+          <option value="UI/UX Design">UI/UX Design</option>
+          <option value="Data Science & AI">Data Science &amp; AI</option>
+        </select>
+      </div>
+
+      <a href="{% url 'admin_export_csv' %}" class="btn-export-csv">
+        <i data-lucide="download" style="width:15px; height:15px;"></i>
+        <span>Export CSV Sheet</span>
+      </a>
+    </div>
+
+    <!-- TABLE BOX -->
+    <div class="table-container">
+      <div class="table-header-strip">
+        <span class="table-title">
+          <i data-lucide="table" style="width:18px; height:18px;"></i>
+          <span>Applicant Logs Ledger</span>
+        </span>
+        <span class="table-count-badge" id="visible-count">Showing: {{ data|length }} entries</span>
+      </div>
+
+      <div class="table-responsive">
+        {% if data %}
+        <table id="applicants-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Verified</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Assigned Cohort</th>
+              <th>Actions</th>
+              <th>Resume / CV</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Gender</th>
+              <th>Location</th>
+              <th>Intake Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in data %}
+            <tr data-status="{{ i.status }}" data-cohort="{% if i.assigned_cohort %}{{ i.assigned_cohort }}{% else %}None{% endif %}">
+              <td class="td-id">#{{ i.id }}</td>
+              <td>
+                <div class="verify-toggle-wrap">
+                  <button 
+                    type="button" 
+                    id="v-btn-{{ i.id }}" 
+                    class="verify-toggle-btn {% if i.is_verified %}verified{% endif %}" 
+                    onclick="toggleVerification('{{ i.id }}')"
+                    title="Toggle applicant verification state"
+                  >
+                    <i data-lucide="check" style="width: 14px; height: 14px; stroke-width: 3;"></i>
+                  </button>
+                </div>
+              </td>
+              <td class="td-name">{{ i.username }}</td>
+              <td>
+                <select 
+                  class="cell-select {% if i.status == 'Pending' %}select-pending{% elif i.status == 'Approved' %}select-approved{% else %}select-rejected{% endif %}"
+                  id="status-select-{{ i.id }}"
+                  onchange="updateStatus('{{ i.id }}', this)"
+                >
+                  <option value="Pending" {% if i.status == 'Pending' %}selected{% endif %}>Pending</option>
+                  <option value="Approved" {% if i.status == 'Approved' %}selected{% endif %}>Approved</option>
+                  <option value="Rejected" {% if i.status == 'Rejected' %}selected{% endif %}>Rejected</option>
+                </select>
+              </td>
+              <td>
+                <select 
+                  class="cell-select cohort-select" 
+                  onchange="assignCohort('{{ i.id }}', this)"
+                >
+                  <option value="" {% if not i.assigned_cohort %}selected{% endif %}>— Unassigned —</option>
+                  <option value="Coding & Development" {% if i.assigned_cohort == 'Coding & Development' %}selected{% endif %}>Coding &amp; Dev</option>
+                  <option value="UI/UX Design" {% if i.assigned_cohort == 'UI/UX Design' %}selected{% endif %}>UI/UX Design</option>
+                  <option value="Data Science & AI" {% if i.assigned_cohort == 'Data Science & AI' %}selected{% endif %}>Data Science &amp; AI</option>
+                </select>
+              </td>
+              <td>
+                <div style="display: flex; align-items: center; min-width: 80px;">
+                  <button 
+                    type="button" 
+                    id="save-btn-{{ i.id }}" 
+                    class="btn-save-row" 
+                    onclick="saveApplicantRow('{{ i.id }}')"
+                    style="display: none;"
+                  >
+                    <i data-lucide="save" style="width:13px; height:13px;"></i>
+                    <span>Save</span>
+                  </button>
+                  <span id="saved-badge-{{ i.id }}" class="saved-badge-text" style="display: none; color: var(--success); font-weight:800; font-size:12px;">
+                    <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+                    <span>Saved!</span>
+                  </span>
+                </div>
+              </td>
+              <td>
+                {% if i.user_resume %}
+                <a href="{{ i.user_resume.url }}" target="_blank" class="resume-link">
+                  <i data-lucide="file-text" style="width:14px; height:14px;"></i>
+                  <span>Download CV</span>
+                </a>
+                {% else %}
+                <span style="color: var(--zinc-300);">—</span>
+                {% endif %}
+              </td>
+              <td>{{ i.useremail }}</td>
+              <td>+91 {{ i.userphone }}</td>
+              <td>
+                <span class="badge-gender">
+                  {% if i.usergender == 'F' %}Female
+                  {% elif i.usergender == 'M' %}Male
+                  {% else %}Other{% endif %}
+                </span>
+              </td>
+              <td>{{ i.usercity }}, {{ i.userstate }}</td>
+              <td class="td-date">
+                {{ i.created_at|date:"d M Y" }}
+                <div class="td-time">{{ i.created_at|time:"h:i A" }}</div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+          <div class="empty-icon-wrap">
+            <i data-lucide="inbox" style="width: 28px; height: 28px;"></i>
+          </div>
+          <h3>No applications found</h3>
+          <p>There are currently no scholarship records available in the database.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-container">
+      <span class="footer-brand-text">She Can Foundation</span>
+      <span class="footer-brand-tagline">Empowering Women Through Technology Education</span>
+      <span class="footer-copyright">&copy; 2026 She Can Foundation. All rights reserved. &nbsp;·&nbsp; Administration Console</span>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // ── CHART 1: COHORT PREFERENCES (PIE/DOUGHNUT) ──
+    const ctxCohort = document.getElementById('cohortChart').getContext('2d');
+    new Chart(ctxCohort, {
+      type: 'doughnut',
+      data: {
+        labels: ['Coding & Dev', 'UI/UX Design', 'Data Science & AI', 'Other Interests'],
+        datasets: [{
+          data: [
+            {{ stats.coding }}, 
+            {{ stats.design }}, 
+            {{ stats.data_sci }}, 
+            {{ stats.other }}
+          ],
+          backgroundColor: ['#1E3E62', '#E03E52', '#8B5CF6', '#CBD5E1'],
+          borderWidth: 2,
+          borderColor: '#FFFFFF'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'right',
+            labels: {
+              boxWidth: 12,
+              font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' }
+            }
+          }
+        },
+        cutout: '65%'
+      }
+    });
+
+    // ── CHART 2: TOP CANDIDATE LOCATIONS (BAR) ──
+    const ctxState = document.getElementById('stateChart').getContext('2d');
+    new Chart(ctxState, {
+      type: 'bar',
+      data: {
+        labels: {{ stats.state_labels|safe }},
+        datasets: [{
+          label: 'Applicants',
+          data: {{ stats.state_values|safe }},
+          backgroundColor: '#1E3E62',
+          borderRadius: 4,
+          maxBarThickness: 24
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1, font: { family: 'Plus Jakarta Sans', size: 10 } }
+          },
+          x: {
+            ticks: { font: { family: 'Plus Jakarta Sans', size: 10, weight: '600' } }
+          }
+        }
+      }
+    });
+
+    // ── TABLE FILTER & LIVE SEARCH ENGINE ──
+    function filterTable() {
+      const searchVal = document.getElementById('search-bar').value.toLowerCase();
+      const statusVal = document.getElementById('status-filter').value;
+      const cohortVal = document.getElementById('cohort-filter').value;
+      
+      const rows = document.querySelectorAll('#applicants-table tbody tr');
+      let visibleCount = 0;
+
+      rows.forEach(row => {
+        const name = row.querySelector('.td-name').textContent.toLowerCase();
+        const location = row.cells[9].textContent.toLowerCase();
+        const email = row.cells[6].textContent.toLowerCase();
+        
+        const matchesSearch = name.includes(searchVal) || location.includes(searchVal) || email.includes(searchVal);
+        
+        const rowStatus = row.getAttribute('data-status');
+        const rowCohort = row.getAttribute('data-cohort');
+        
+        const matchesStatus = !statusVal || rowStatus === statusVal;
+        const matchesCohort = !cohortVal || rowCohort === cohortVal;
+
+        if (matchesSearch && matchesStatus && matchesCohort) {
+          row.classList.remove('row-hidden');
+          visibleCount++;
+        } else {
+          row.classList.add('row-hidden');
+        }
+      });
+
+      document.getElementById('visible-count').textContent = `Showing: ${visibleCount} entries`;
+    }
+
+    // ── AJAX DATABASE UPDATE HANDLERS ──
+    
+    // CSRF TOKEN GETTER
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+
+    // 1. Local Verification Toggle
+    function toggleVerification(id) {
+      const btn = document.getElementById(`v-btn-${id}`);
+      btn.classList.toggle('verified');
+      showSaveButton(id);
+    }
+
+    // 2. Local Status Update dropdown
+    function updateStatus(id, selectElement) {
+      const val = selectElement.value;
+      
+      // Update cell dropdown coloring classes
+      selectElement.className = "cell-select";
+      if (val === 'Pending') selectElement.classList.add('select-pending');
+      else if (val === 'Approved') selectElement.classList.add('select-approved');
+      else if (val === 'Rejected') selectElement.classList.add('select-rejected');
+
+      // If approved, automatically toggle verification locally
+      if (val === 'Approved') {
+        const btn = document.getElementById(`v-btn-${id}`);
+        if (btn && !btn.classList.contains('verified')) {
+          btn.classList.add('verified');
+        }
+      }
+
+      showSaveButton(id);
+    }
+
+    // 3. Local Assign Cohort
+    function assignCohort(id, selectElement) {
+      showSaveButton(id);
+    }
+
+    // Helper: Show Row Save Button
+    function showSaveButton(id) {
+      const saveBtn = document.getElementById(`save-btn-${id}`);
+      const savedBadge = document.getElementById(`saved-badge-${id}`);
+      if (saveBtn) {
+        saveBtn.style.display = 'inline-flex';
+        // Re-initialize Lucide Icons for dynamically rendered elements
+        lucide.createIcons();
+      }
+      if (savedBadge) {
+        savedBadge.style.display = 'none';
+      }
+    }
+
+    // 4. AJAX Save Applicant Row
+    function saveApplicantRow(id) {
+      const saveBtn = document.getElementById(`save-btn-${id}`);
+      const savedBadge = document.getElementById(`saved-badge-${id}`);
+      const verifyBtn = document.getElementById(`v-btn-${id}`);
+      const statusSelect = document.getElementById(`status-select-${id}`);
+      const row = statusSelect.closest('tr');
+      const cohortSelect = row.querySelector('.cohort-select');
+
+      const isVerified = verifyBtn.classList.contains('verified');
+      const status = statusSelect.value;
+      const cohort = cohortSelect.value;
+
+      // Disable inputs and show loading state
+      saveBtn.disabled = true;
+      saveBtn.style.opacity = '0.6';
+
+      const formData = new FormData();
+      formData.append('is_verified', isVerified ? 'true' : 'false');
+      formData.append('status', status);
+      formData.append('cohort', cohort);
+
+      fetch(`/dashboard/save-applicant/${id}/`, {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': csrftoken
+        },
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          // Sync data attributes on the row for filtering
+          row.setAttribute('data-status', data.status);
+          row.setAttribute('data-cohort', data.assigned_cohort || 'None');
+
+          // Sync checkbox UI
+          if (data.is_verified) {
+            verifyBtn.classList.add('verified');
+          } else {
+            verifyBtn.classList.remove('verified');
+          }
+
+          // Sync status select UI
+          statusSelect.className = "cell-select";
+          if (data.status === 'Pending') statusSelect.classList.add('select-pending');
+          else if (data.status === 'Approved') statusSelect.classList.add('select-approved');
+          else if (data.status === 'Rejected') statusSelect.classList.add('select-rejected');
+          statusSelect.value = data.status;
+
+          // Hide save button & show dynamic saved badge
+          saveBtn.style.display = 'none';
+          saveBtn.disabled = false;
+          saveBtn.style.opacity = '1';
+
+          if (savedBadge) {
+            savedBadge.style.display = 'inline-flex';
+            lucide.createIcons();
+            setTimeout(() => {
+              savedBadge.style.transition = 'opacity 0.5s ease';
+              savedBadge.style.opacity = '0';
+              setTimeout(() => {
+                savedBadge.style.display = 'none';
+                savedBadge.style.opacity = '1'; // reset
+              }, 500);
+            }, 1500);
+          }
+
+          // Re-calculate statistics and redraw charts
+          refreshMetricCounters();
+          updateChartsData();
+        }
+      })
+      .catch(err => {
+        console.error("Error saving applicant:", err);
+        saveBtn.disabled = false;
+        saveBtn.style.opacity = '1';
+      });
+    }
+
+    // Recalculate Chart.js values in real-time
+    function updateChartsData() {
+      const rows = document.querySelectorAll('#applicants-table tbody tr');
+      let coding = 0, design = 0, dataSci = 0, other = 0;
+      
+      rows.forEach(row => {
+        const cohort = row.getAttribute('data-cohort');
+        if (cohort === 'Coding & Development') coding++;
+        else if (cohort === 'UI/UX Design') design++;
+        else if (cohort === 'Data Science & AI') dataSci++;
+        else other++;
+      });
+
+      const cohortChartInstance = Chart.getChart('cohortChart');
+      if (cohortChartInstance) {
+        cohortChartInstance.data.datasets[0].data = [coding, design, dataSci, other];
+        cohortChartInstance.update();
+      }
+    }
+
+    // 4. STAT COUNTERS HELPER
+    function updateStatsCounter(elementId, increment) {
+      const el = document.getElementById(elementId);
+      if (el) {
+        let currentNum = parseInt(el.textContent) || 0;
+        el.textContent = Math.max(0, currentNum + increment);
+      }
+    }
+
+    // Re-calculate metric figures dynamically
+    function refreshMetricCounters() {
+      const rows = document.querySelectorAll('#applicants-table tbody tr');
+      let pending = 0, approved = 0, verified = 0;
+      
+      rows.forEach(row => {
+        const status = row.getAttribute('data-status');
+        const isVerified = row.querySelector('.verify-toggle-btn').classList.contains('verified');
+        
+        if (status === 'Pending') pending++;
+        else if (status === 'Approved') approved++;
+        
+        if (isVerified) verified++;
+      });
+
+      document.getElementById('stats-pending').textContent = pending;
+      document.getElementById('stats-approved').textContent = approved;
+      document.getElementById('stats-verified').textContent = verified;
+    }
+  </script>
+</body>
+</html>

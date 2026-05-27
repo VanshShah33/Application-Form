@@ -1,0 +1,365 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <title>{% if is_admin_login %}Admin Login{% else %}Student Login{% endif %} | She Can Foundation</title>
+  <link rel="shortcut icon" type="image/png" href="{% static 'images/logo.png' %}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --brand-dark:      #0B192C;
+      --brand-primary:   #1E3E62;
+      --brand-accent:    #E03E52;
+      --brand-accent-lt: #FFF0F2;
+      
+      --white:           #FFFFFF;
+      --zinc-50:         #F8FAFC;
+      --zinc-100:        #F1F5F9;
+      --zinc-200:        #E2E8F0;
+      --zinc-500:        #64748B;
+      --zinc-700:        #334155;
+      --zinc-900:        #0F172A;
+      
+      --border:          #E2E8F0;
+      --radius:          12px;
+      --radius-lg:       16px;
+      
+      --shadow-sm:       0 1px 3px rgba(11, 25, 44, 0.05);
+      --shadow-lg:       0 20px 40px -15px rgba(11, 25, 44, 0.12);
+      
+      --transition:      all 0.25s ease;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--zinc-50);
+      min-height: 100vh;
+      color: var(--zinc-700);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── HEADER ── */
+    header {
+      height: 70px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      max-width: 900px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+    }
+
+    .brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--brand-accent);
+    }
+
+    .brand-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      line-height: 1.2;
+    }
+
+    .brand-tagline {
+      font-size: 10.5px;
+      color: var(--zinc-500);
+      font-weight: 500;
+    }
+
+    /* ── PAGE MAIN ── */
+    .page-main {
+      flex: 1;
+      padding: 60px 1.5rem 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .auth-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 2.5rem 2rem;
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .auth-header h1 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--brand-dark);
+      margin-bottom: 6px;
+    }
+
+    .auth-header p {
+      font-size: 13.5px;
+      color: var(--zinc-500);
+    }
+
+    /* Message Alerts */
+    .alert-box {
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .alert-error {
+      background: #FEF2F2;
+      color: #EF4444;
+      border: 1px solid #FEE2E2;
+    }
+
+    .alert-success {
+      background: #ECFDF4;
+      color: #10B981;
+      border: 1px solid #D1FAE5;
+    }
+
+    /* Form Fields */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--zinc-700);
+    }
+
+    .form-group input {
+      width: 100%;
+      height: 40px;
+      padding: 0 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      color: var(--zinc-900);
+      background: var(--white);
+      outline: none;
+      transition: var(--transition);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .form-group input:focus {
+      border-color: var(--brand-accent);
+      box-shadow: 0 0 0 3px rgba(224, 62, 82, 0.08);
+    }
+
+    .btn-auth-submit {
+      width: 100%;
+      height: 42px;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--brand-primary);
+      color: var(--white);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: var(--transition);
+      box-shadow: 0 4px 10px rgba(30, 62, 98, 0.15);
+      margin-top: 1.75rem;
+    }
+
+    .btn-auth-submit:hover {
+      background: var(--brand-dark);
+      box-shadow: 0 6px 14px rgba(11, 25, 44, 0.2);
+    }
+
+    .auth-footer-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 13px;
+      color: var(--zinc-500);
+    }
+
+    .auth-footer-link a {
+      color: var(--brand-accent);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .auth-footer-link a:hover {
+      text-decoration: underline;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--brand-dark);
+      color: var(--zinc-300);
+      padding: 24px 1.5rem;
+      border-top: 3px solid var(--brand-accent);
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .footer-copyright {
+      font-size: 12px;
+      color: var(--zinc-500);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <a class="brand-logo-wrap" href="/">
+        <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=296,fit=crop,q=95/Aq2NJ23MzBH2rx2j/she-YlenJon1O7ieeEoa.jpg"
+             alt="She Can Foundation Logo" class="brand-logo" />
+        <div class="brand-details">
+          <span class="brand-name">She Can Foundation</span>
+          <span class="brand-tagline">Empowering Women in Tech</span>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="page-main">
+    <div class="auth-container">
+      <div class="auth-card">
+        
+        <div class="auth-header">
+          {% if is_admin_login %}
+            <h1>Admin Console Login</h1>
+            <p>Access the admissions administration control panel</p>
+          {% else %}
+            <h1>Student Login</h1>
+            <p>Access your personal scholarship tracking portal</p>
+          {% endif %}
+        </div>
+
+        <!-- Alerts -->
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert-box {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+              <i data-lucide="{% if message.tags == 'error' %}alert-circle{% else %}check-circle{% endif %}" style="width:14px; height:14px;"></i>
+              <span>{{ message }}</span>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+          {% csrf_token %}
+          {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+          {% endif %}
+          
+          <div class="form-group">
+            {% if is_admin_login %}
+              <label for="useremail">Username</label>
+              <input type="text" name="useremail" id="useremail" placeholder="Enter admin username" required />
+            {% else %}
+              <label for="useremail">Email Address</label>
+              <input type="email" name="useremail" id="useremail" placeholder="name@example.com" required />
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="••••••••" required />
+          </div>
+
+          <button type="submit" class="btn-auth-submit">
+            <span>Log In</span>
+            <i data-lucide="log-in" style="width:14px; height:14px;"></i>
+          </button>
+        </form>
+
+        {% if not is_admin_login %}
+        <div class="auth-footer-link">
+          Don't have a student account? <br>
+          <a href="{% url 'student_register' %}">Create Account</a>
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-container">
+      <span class="footer-copyright">&copy; 2026 She Can Foundation. All rights reserved. &nbsp;·&nbsp; Registered NGO.</span>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -1,0 +1,769 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Student Portal | She Can Foundation</title>
+  <link rel="shortcut icon" type="image/png" href="{% static 'images/logo.png' %}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- Typography & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      /* Palette matching success.html and home.html */
+      --brand-dark:      #0B192C;
+      --brand-primary:   #1E3E62;
+      --brand-accent:    #E03E52;
+      --brand-accent-lt: #FFF0F2;
+      
+      --white:           #FFFFFF;
+      --zinc-50:         #F8FAFC;
+      --zinc-100:        #F1F5F9;
+      --zinc-200:        #E2E8F0;
+      --zinc-300:        #CBD5E1;
+      --zinc-500:        #64748B;
+      --zinc-700:        #334155;
+      --zinc-900:        #0F172A;
+      
+      --success:         #10B981;
+      --success-lt:      #ECFDF5;
+      --warning:         #F59E0B;
+      --warning-lt:      #FFFBEB;
+      --danger:          #EF4444;
+      --danger-lt:       #FEF2F2;
+      
+      --border:          #E2E8F0;
+      --radius-sm:       6px;
+      --radius:          12px;
+      --radius-lg:       16px;
+      
+      --shadow-sm:       0 1px 3px rgba(11, 25, 44, 0.05);
+      --shadow:          0 10px 30px -10px rgba(11, 25, 44, 0.08), 0 1px 3px rgba(11, 25, 44, 0.02);
+      --shadow-lg:       0 20px 40px -15px rgba(11, 25, 44, 0.12);
+      
+      --transition:      all 0.25s ease;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--zinc-50);
+      min-height: 100vh;
+      color: var(--zinc-700);
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    header {
+      height: 70px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-container {
+      max-width: 900px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+    }
+
+    .brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid var(--brand-accent);
+    }
+
+    .brand-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--brand-dark);
+      line-height: 1.2;
+    }
+
+    .brand-tagline {
+      font-size: 10.5px;
+      color: var(--zinc-500);
+      font-weight: 500;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-logout {
+      height: 36px;
+      padding: 0 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--white);
+      color: var(--zinc-700);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-logout:hover {
+      background: var(--danger-lt);
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    /* ── PAGE MAIN ── */
+    .page-main {
+      flex: 1;
+      padding: 40px 1.5rem 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .portal-container {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    /* Welcome Banner */
+    .welcome-banner {
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .welcome-banner h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--brand-dark);
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    .welcome-banner p {
+      font-size: 14.5px;
+      color: var(--zinc-500);
+    }
+
+    /* ── PORTAL CARD ── */
+    .portal-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .portal-section-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--zinc-500);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--zinc-100);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Status Bar indicators */
+    .status-tracker {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2.25rem;
+      position: relative;
+    }
+
+    .tracker-item {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+
+    .tracker-item:last-child {
+      flex: 0;
+    }
+
+    .tracker-dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--zinc-200);
+      background: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--zinc-500);
+      z-index: 5;
+      flex-shrink: 0;
+    }
+
+    .tracker-item.active .tracker-dot {
+      border-color: var(--brand-accent);
+      color: var(--brand-accent);
+      box-shadow: 0 0 0 5px rgba(224, 62, 82, 0.12);
+    }
+
+    .tracker-item.done .tracker-dot {
+      border-color: var(--success);
+      background: var(--success);
+      color: var(--white);
+    }
+
+    .tracker-item.rejected .tracker-dot {
+      border-color: var(--danger);
+      background: var(--danger);
+      color: var(--white);
+    }
+
+    .tracker-line {
+      flex: 1;
+      height: 3px;
+      background: var(--zinc-200);
+      margin: 0 -1px;
+    }
+
+    .tracker-item.done .tracker-line {
+      background: var(--success);
+    }
+
+    .tracker-item.rejected .tracker-line {
+      background: var(--danger);
+    }
+
+    .tracker-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .tracker-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--zinc-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      width: 70px;
+      text-align: center;
+    }
+
+    .tracker-label.active { color: var(--brand-accent); }
+    .tracker-label.done { color: var(--success); }
+    .tracker-label.rejected { color: var(--danger); }
+
+    .tracker-labels span:first-child { text-align: left; }
+    .tracker-labels span:last-child { text-align: right; }
+
+    /* Summary Details Grid */
+    .details-box {
+      background: var(--zinc-50);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .details-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .details-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--zinc-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .details-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--brand-dark);
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status-pending { background: var(--warning-lt); color: var(--warning); }
+    .status-approved { background: var(--success-lt); color: var(--success); }
+    .status-rejected { background: var(--danger-lt); color: var(--danger); }
+
+    /* Resume Link */
+    .resume-download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--brand-accent);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 13.5px;
+    }
+
+    .resume-download-btn:hover {
+      text-decoration: underline;
+    }
+
+    /* Roadmap Box */
+    .roadmap-box {
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+    }
+
+    .roadmap-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--brand-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .roadmap-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      list-style: none;
+    }
+
+    .roadmap-item {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .step-badge {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--zinc-200);
+      color: var(--zinc-700);
+      font-size: 10.5px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .roadmap-item.completed .step-badge {
+      background: var(--success-lt);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .roadmap-item.active .step-badge {
+      background: var(--brand-accent-lt);
+      color: var(--brand-accent);
+      border: 1px solid rgba(224, 62, 82, 0.2);
+    }
+
+    .step-desc h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--zinc-900);
+      line-height: 1.3;
+      margin-bottom: 1px;
+    }
+
+    .step-desc p {
+      font-size: 12px;
+      color: var(--zinc-500);
+      margin-bottom: 0;
+      line-height: 1.4;
+    }
+
+    /* Empty state */
+    .empty-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .empty-icon {
+      width: 60px; height: 60px;
+      border-radius: 50%;
+      background: var(--brand-accent-lt);
+      color: var(--brand-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+
+    .empty-card h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--brand-dark);
+      margin-bottom: 8px;
+    }
+
+    .empty-card p {
+      font-size: 14.5px;
+      color: var(--zinc-500);
+      max-width: 320px;
+      margin: 0 auto 2rem;
+    }
+
+    .btn-apply-now {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 42px;
+      padding: 0 24px;
+      border-radius: var(--radius);
+      background: var(--brand-primary);
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(30, 62, 98, 0.15);
+      transition: var(--transition);
+    }
+
+    .btn-apply-now:hover {
+      background: var(--brand-dark);
+      transform: translateY(-1px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--brand-dark);
+      color: var(--zinc-300);
+      padding: 30px 1.5rem;
+      border-top: 3px solid var(--brand-accent);
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-copyright {
+      font-size: 12px;
+      color: var(--zinc-500);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-container">
+      <a class="brand-logo-wrap" href="/">
+        <img src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=296,fit=crop,q=95/Aq2NJ23MzBH2rx2j/she-YlenJon1O7ieeEoa.jpg"
+             alt="She Can Foundation Logo" class="brand-logo" />
+        <div class="brand-details">
+          <span class="brand-name">She Can Foundation</span>
+          <span class="brand-tagline">Empowering Women in Tech</span>
+        </div>
+      </a>
+      <div class="header-actions">
+        {% if request.user.is_superuser %}
+        <a href="{% url 'dashboard' %}" class="btn-logout" style="border-color: var(--brand-primary); color: var(--brand-primary); margin-right: 4px;">
+          <i data-lucide="shield" style="width: 13px; height: 13px;"></i>
+          <span>Admin Dashboard</span>
+        </a>
+        {% endif %}
+        <a href="{% url 'student_logout' %}" class="btn-logout">
+          <i data-lucide="log-out" style="width: 13px; height: 13px;"></i>
+          <span>Log Out</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="page-main">
+    <div class="portal-container">
+      
+      <!-- Welcome Banner -->
+      <div class="welcome-banner">
+        <h1>Welcome back, {{ request.user.first_name|default:"Student" }}!</h1>
+        <p>Intake 2026 application tracking logs</p>
+      </div>
+
+      {% if contact %}
+        <!-- Dynamic Verification Callout Banners -->
+        {% if contact.is_verified %}
+          <div class="verification-complete-alert" style="background: var(--success-lt); border: 1.5px solid rgba(16, 185, 129, 0.2); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--shadow-sm);">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--success); color: var(--white); display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.15);">
+              <i data-lucide="check-circle" style="width: 22px; height: 22px;"></i>
+            </div>
+            <div>
+              <h3 style="color: var(--zinc-900); font-size: 15px; font-weight: 800; margin-bottom: 3px; display: flex; align-items: center; gap: 6px;">
+                <span>Verification Complete!</span>
+                {% if contact.status == 'Approved' %}
+                  <span style="font-size: 10px; background: var(--success); color: var(--white); padding: 2px 8px; border-radius: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Admitted</span>
+                {% else %}
+                  <span style="font-size: 10px; background: var(--warning); color: var(--white); padding: 2px 8px; border-radius: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Pending Admissions Match</span>
+                {% endif %}
+              </h3>
+              <p style="color: var(--zinc-700); font-size: 13px; line-height: 1.5;">
+                {% if contact.status == 'Approved' %}
+                  Congratulations! Your scholarship application and credentials have been fully verified by our admissions board. Your cohort track assignment is active and your mentor enrollment is in progress.
+                {% else %}
+                  Success! Your applicant profile and uploaded credentials have been verified. Our admissions board is completing the final cohort assignment match. We will reach out shortly!
+                {% endif %}
+              </p>
+            </div>
+          </div>
+        {% elif contact.status == 'Rejected' %}
+          <div class="verification-complete-alert" style="background: var(--danger-lt); border: 1.5px solid rgba(239, 68, 68, 0.2); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--shadow-sm);">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--danger); color: var(--white); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i data-lucide="x-circle" style="width: 22px; height: 22px;"></i>
+            </div>
+            <div>
+              <h3 style="color: var(--zinc-900); font-size: 15px; font-weight: 800; margin-bottom: 3px;">
+                Application Closed
+              </h3>
+              <p style="color: var(--zinc-700); font-size: 13px; line-height: 1.5;">
+                Thank you for applying. After careful consideration, we regret to inform you that we are unable to offer you a scholarship match for this intake session. We wish you the very best in your technology education journey.
+              </p>
+            </div>
+          </div>
+        {% else %}
+          <div class="verification-complete-alert" style="background: var(--warning-lt); border: 1.5px solid rgba(245, 158, 11, 0.2); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--shadow-sm);">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--warning); color: var(--white); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+              <i data-lucide="clock" style="width: 20px; height: 20px;"></i>
+            </div>
+            <div>
+              <h3 style="color: var(--zinc-900); font-size: 15px; font-weight: 800; margin-bottom: 3px;">
+                Verification in Progress
+              </h3>
+              <p style="color: var(--zinc-700); font-size: 13px; line-height: 1.5;">
+                Your application has been received and is currently under review by our admissions board. We are verifying your uploaded resume and credentials. You will receive an email update once verification is complete!
+              </p>
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- PORTAL CARD -->
+        <div class="portal-card">
+          
+          <div class="portal-section-title">
+            <i data-lucide="activity" style="width: 14px; height: 14px; color: var(--brand-accent);"></i>
+            <span>Application Progress</span>
+          </div>
+
+          <!-- Application status state timeline dots -->
+          <div style="display:flex; flex-direction:column; gap:4px; margin-bottom: 2rem;">
+            <div class="status-tracker">
+              <!-- Submitted -->
+              <div class="tracker-item done">
+                <div class="tracker-dot">✓</div>
+                <div class="tracker-line"></div>
+              </div>
+              
+              <!-- Under Review -->
+              <div class="tracker-item {% if contact.status == 'Approved' or contact.status == 'Rejected' %}done{% else %}active{% endif %}">
+                <div class="tracker-dot">2</div>
+                <div class="tracker-line"></div>
+              </div>
+              
+              <!-- Selection Outcome -->
+              <div class="tracker-item {% if contact.status == 'Approved' %}done{% elif contact.status == 'Rejected' %}rejected{% endif %}">
+                <div class="tracker-dot">{% if contact.status == 'Approved' %}✓{% elif contact.status == 'Rejected' %}✗{% else %}3{% endif %}</div>
+              </div>
+            </div>
+            <div class="tracker-labels">
+              <span class="tracker-label done">Submitted</span>
+              <span class="tracker-label {% if contact.status == 'Approved' or contact.status == 'Rejected' %}done{% else %}active{% endif %}">Under Review</span>
+              <span class="tracker-label {% if contact.status == 'Approved' %}done{% elif contact.status == 'Rejected' %}rejected{% endif %}">Admitted</span>
+            </div>
+          </div>
+
+          <div class="portal-section-title">
+            <i data-lucide="file-text" style="width: 14px; height: 14px; color: var(--brand-accent);"></i>
+            <span>Logged Profile Details</span>
+          </div>
+
+          <!-- Info Box -->
+          <div class="details-box">
+            <div class="details-grid">
+              
+              <div class="details-item">
+                <span class="details-label">Applicant Name</span>
+                <span class="details-value">{{ contact.username }}</span>
+              </div>
+
+              <div class="details-item">
+                <span class="details-label">Intake Status</span>
+                <div>
+                  <span class="badge-status {% if contact.status == 'Pending' %}status-pending{% elif contact.status == 'Approved' %}status-approved{% else %}status-rejected{% endif %}">
+                    {{ contact.status }}
+                  </span>
+                </div>
+              </div>
+
+              <div class="details-item" style="margin-top: 10px;">
+                <span class="details-label">State &amp; City</span>
+                <span class="details-value">{{ contact.usercity }}, {{ contact.userstate }}</span>
+              </div>
+
+              <div class="details-item" style="margin-top: 10px;">
+                <span class="details-label">Assigned Cohort</span>
+                <span class="details-value">{{ contact.assigned_cohort|default:"— Not Assigned Yet —" }}</span>
+              </div>
+
+              <div class="details-item" style="margin-top: 10px;">
+                <span class="details-label">Verification State</span>
+                <span class="details-value" style="color: {% if contact.is_verified %}var(--success){% else %}var(--warning){% endif %}; font-weight:800;">
+                  {% if contact.is_verified %}Verified Scholar{% else %}Verification Pending{% endif %}
+                </span>
+              </div>
+
+              <div class="details-item" style="margin-top: 10px;">
+                <span class="details-label">Resume / CV</span>
+                <div>
+                  {% if contact.user_resume %}
+                    <a href="{{ contact.user_resume.url }}" target="_blank" class="resume-download-btn">
+                      <i data-lucide="download" style="width:13px; height:13px;"></i>
+                      <span>Download Uploaded Resume</span>
+                    </a>
+                  {% else %}
+                    <span style="color:var(--zinc-500); font-weight:700;">No Resume Uploaded</span>
+                  {% endif %}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Roadmap next steps -->
+          <div class="roadmap-box">
+            <span class="roadmap-title">
+              <i data-lucide="info" style="width:13px; height:13px; color:var(--brand-accent);"></i>
+              <span>Next Steps Roadmap</span>
+            </span>
+
+            <ul class="roadmap-list">
+              <li class="roadmap-item completed">
+                <span class="step-badge">1</span>
+                <div class="step-desc">
+                  <h4>Application Submitted</h4>
+                  <p>Your student parameters and motivational details have been securely indexed.</p>
+                </div>
+              </li>
+              
+              <li class="roadmap-item {% if contact.status == 'Pending' %}active{% else %}completed{% endif %}">
+                <span class="step-badge">2</span>
+                <div class="step-desc">
+                  <h4>Admissions Review</h4>
+                  <p>Our academic board evaluates your profile alignment. If qualified, a friendly virtual chat invitation is issued via email.</p>
+                </div>
+              </li>
+
+              <li class="roadmap-item {% if contact.status == 'Approved' %}completed{% elif contact.status == 'Rejected' %}rejected{% endif %}">
+                <span class="step-badge">3</span>
+                <div class="step-desc">
+                  <h4>Cohort Enrollment</h4>
+                  <p>Upon approval, you are matching with a cohort track and assigned a dedicated mentor.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      {% else %}
+        <!-- EMPTY STATE CARD -->
+        <div class="empty-card">
+          <div class="empty-icon">
+            <i data-lucide="file-warning" style="width: 28px; height: 28px;"></i>
+          </div>
+          <h2>No Scholarship Record Found</h2>
+          <p>We could not find an active scholarship application matching your email '{{ request.user.email }}'.</p>
+          <a href="/" class="btn-apply-now">
+            <i data-lucide="plus-circle" style="width: 15px; height: 15px;"></i>
+            <span>Submit Your Application Now</span>
+          </a>
+        </div>
+      {% endif %}
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-container">
+      <span class="footer-copyright">&copy; 2026 She Can Foundation. All rights reserved. &nbsp;·&nbsp; Registered NGO.</span>
+    </div>
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
